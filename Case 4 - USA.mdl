@@ -1,0 +1,454 @@
+{UTF-8}
+Emissions=( Ec/SQRT(MAX ("Low-carbon consumption",ε R)) + Ef/SQRT(MAX("Low-carbon production"\
+		,ε R)) ) * E ref
+	~	tCO2/Year
+	~	Annual emissions flow determined by the consumption and production. Higher \
+		values of Low-carbon consumption and Low-carbon production reduce \
+		emissions through the inverse relationships in the equation.
+	|
+
+Ec=1
+	~	Dmnl
+	~	Relative weight assigned to consumption-related emissions in the Emissions \
+		equation.
+	|
+
+Ef=2
+	~	Dmnl
+	~	Relative weight assigned to production-related emissions in the Emissions \
+		equation.
+	|
+
+ε R=1
+	~	Dmnl
+	~	Positive lower-bound parameter used in the MAX functions of the Emissions \
+		equation to prevent division by zero when Low-carbon consumption or \
+		Low-carbon production approaches zero.
+	|
+
+T4=2
+	~	Year
+	~	Time delay from Pro-climate voting to Climate-supportive politicians in \
+		power, representing the time required for electoral preferences to \
+		translate into political power and policy influence.
+	|
+
+"Climate-supportive politicians in power"=Scale parameter * SQRT(DELAY1("Pro-climate voting"\
+		,T4)) * (Women’s share as politicians
+	 * Women’s impact as politicians + (1-Women’s share as politicians) * 0.5)
+	~	Dmnl
+	~	This variable represents Politician role. It captures the extent to which \
+		politicians implement climate-oriented policies and measures. A larger \
+		value indicates stronger climate-supportive political action.
+	|
+
+T6=2
+	~	Year
+	~	Time delay from Climate-supportive politicians in power to Low-carbon \
+		consumption, representing the time required for climate policy to affect \
+		consumer behaviour.
+	|
+
+T7=5
+	~	Year
+	~	Time delay from Climate-supportive politicians in power to Low-carbon \
+		production, representing the time required for firms to respond to climate \
+		policy and regulation.
+	|
+
+T8=1
+	~	Year
+	~	Time delay from Low-carbon consumption to Low-carbon production, \
+		representing the time required for firms to respond to changes in consumer \
+		demand.
+	|
+
+"Pro-climate voting"=Scale parameter * SQRT(DELAY1("Promotion of climate-supportive opinions"\
+		, T3)) * (Women’s share as voters
+	 * Women’s impact as voters + (1-Women’s share as voters) * 0.5)
+	~	Dmnl
+	~	This variable represents Voter role. It captures the extent to which \
+		individuals use their voting behaviour to support politicians and \
+		political options that favour stronger climate action. A larger value \
+		indicates stronger pro-climate voting.
+	|
+
+Initial remaining carbon budget=Carbon budget - Initial cumulative emissions
+	~	tCO2
+	~	Initial value of the Remaining carbon budget at the start of the \
+		simulation. It is calculated as the difference between the Carbon budget \
+		and Initial cumulative emissions and is used as the reference value for \
+		normalizing the carbon-budget feedback.
+	|
+
+"Low-carbon consumption"=Scale parameter * SQRT(SQRT(DELAY1("Climate-supportive politicians in power"\
+		, T6)) * SQRT
+	(DELAY1("Promotion of low-carbon lifestyles", T5))) * (Women’s share as consumers \
+		* Women’s impact as consumers
+	 + (1-Women’s share as consumers) * 0.5)
+	~	Dmnl
+	~	This variable represents Consumer role. It captures the extent to which \
+		individuals adopt consumption patterns with lower carbon impacts, \
+		including choices related to goods and services, transport, energy use, \
+		and other household activities. A larger value indicates more low-carbon \
+		consumption.
+	|
+
+"Low-carbon production"=Scale parameter * SQRT(SQRT(DELAY1("Climate-supportive politicians in power"\
+		, T7)) * SQRT
+	(DELAY1("Low-carbon consumption", T8))) * (Women’s share as firm managers * Women’s impact as firm managers
+	 + (1-Women’s share as firm managers) * 0.5)
+	~	Dmnl
+	~	This variable represents Firm-manager role. It captures the extent to \
+		which firms and managers adopt production practices, technologies, inputs, \
+		and strategies that reduce carbon emissions. A larger value indicates more \
+		climate-friendly production.
+	|
+
+"Promotion of low-carbon lifestyles"=Scale parameter * SQRT(DELAY1(Initial remaining carbon budget\
+		/(MAX(Remaining carbon budget,ϵ RB)), T2)) *
+	 (Women’s share as lifestyle influencers * Women’s impact as lifestyle influencers\
+		 + (1-Women’s share as lifestyle influencers
+	)* 0.5)
+	~	Dmnl
+	~	This variable represents Lifestyle influencer role. It captures the extent \
+		to which individuals influence others to adopt more sustainable and \
+		lower-carbon lifestyles and consumption patterns. A larger value indicates \
+		stronger promotion of low-carbon lifestyles.
+	|
+
+T5=1
+	~	Year
+	~	Time delay from Promotion of low-carbon lifestyles to Low-carbon \
+		consumption, representing the time required for lifestyle influencers to \
+		affect consumption choices.
+	|
+
+T2=3
+	~	Year
+	~	Time delay from the Remaining carbon budget to Promotion of low-carbon \
+		lifestyles. It reflects the time required for information about the carbon \
+		budget to influence lifestyle influencers.
+	|
+
+T3=3
+	~	Year
+	~	Time delay from Promotion of climate-supportive opinions to Pro-climate \
+		voting, representing the time required for opinion influence to affect \
+		voting behaviour.
+	|
+
+T1=3
+	~	Year
+	~	Time delay from the Remaining carbon budget to Promotion of \
+		climate-supportive opinions. It reflects the time required for information \
+		about the carbon budget to influence opinion influencers.
+	|
+
+ϵ RB=1
+	~	tCO2
+	~	Positive lower-bound parameter applied to the Remaining carbon budget in \
+		the feedback equations. It prevents the denominator from becoming zero or \
+		negative when the remaining carbon budget approaches or reaches zero.
+	|
+
+Initial cumulative emissions=1
+	~	tCO2
+	~		|
+
+"Promotion of climate-supportive opinions"=Scale parameter * SQRT(DELAY1(Initial remaining carbon budget\
+		/(MAX(Remaining carbon budget
+	,ϵ RB)), T1
+	)) * (Women’s share as opinion influencers * Women’s impact as opinion influencers\
+		 + (1-Women’s share as opinion influencers
+	) * 0.5)
+	~	Dmnl
+	~	This variable represents Opinion influencer role. It captures the extent \
+		to which individuals influence others’ voting behaviour and encourage \
+		support for climate-oriented politicians. A larger value indicates \
+		stronger climate-supportive influence.
+	|
+
+Carbon budget=150
+	~	tCO2
+	~	Fixed upper limit for cumulative emissions in the model. It represents the \
+		total amount of emissions that can be emitted before the carbon budget is \
+		exhausted.
+	|
+
+Remaining carbon budget=Carbon budget - Cumulative emissions
+	~	tCO2
+	~	Amount of the carbon budget that remains available at each point in time. \
+		It is calculated as the difference between the Carbon budget and \
+		Cumulative emissions. A smaller value indicates that cumulative emissions \
+		are approaching the carbon-budget limit.
+	|
+
+Women’s impact as firm managers=0.7
+	~	Dmnl
+	~	This parameter represents the average climate-supportive impact of women \
+		in firm-management roles on production practices. The corresponding impact \
+		of men is fixed at 0.5 in the role equation.
+	|
+
+Cumulative emissions= INTEG (Emissions,
+		Initial cumulative emissions)
+	~	tCO2
+	~	Stock variable that accumulates the annual Emissions flow over time, \
+		starting from Initial cumulative emissions.
+	|
+
+E ref=1
+	~	tCO2/Year
+	~	Reference emissions level used as a multiplier after the consumption and \
+		production terms determine the dimensionless emissions measure. Because \
+		carries the unit tCO2/year, multiplying by it expresses the resulting \
+		emissions flow in tCO2/year. It does not alter how consumption and \
+		production affect emissions; it only sets the unit and scale of the \
+		resulting emissions value. It is normalized to 1 because the model focuses \
+		on relative rather than empirically calibrated absolute emissions.
+	|
+
+Women’s impact as voters=0.7
+	~	Dmnl
+	~	This parameter represents the average climate-supportive impact of women \
+		in the voter role. The corresponding impact of men is fixed at 0.5 in the \
+		role equation.
+	|
+
+Women’s share as consumers=0.6
+	~	Dmnl
+	~	Share of the consumer role attributed to women in the model; the \
+		corresponding share of men is one minus this value.
+	|
+
+Women’s share as firm managers=0.32
+	~	Dmnl
+	~	Share of firm-management roles attributed to women in the model; the \
+		corresponding share of men is one minus this value.
+	|
+
+Women’s share as lifestyle influencers=0.8
+	~	Dmnl
+	~	Share of lifestyle influencers attributed to women in the model; the \
+		corresponding share of men is one minus this value.
+	|
+
+Women’s share as opinion influencers=0.3
+	~	Dmnl
+	~	Share of opinion influencers attributed to women in the model; the \
+		corresponding share of men is one minus this value.
+	|
+
+Women’s share as politicians=0.28
+	~	Dmnl
+	~	Share of political representation attributed to women in the model; the \
+		corresponding share of men is one minus this value.
+	|
+
+Women’s impact as consumers=0.8
+	~	Dmnl
+	~	This parameter represents the average tendency of women in the consumer \
+		role toward lower-carbon consumption. The corresponding impact of men is \
+		fixed at 0.5 in the role equation.
+	|
+
+Women’s share as voters=0.53
+	~	Dmnl
+	~	Share of the voter role attributed to women in the model; the \
+		corresponding share of men is one minus this value.
+	|
+
+Women’s impact as lifestyle influencers=0.8
+	~	Dmnl
+	~	This parameter represents the average effectiveness of women as lifestyle \
+		influencers in promoting lower-carbon lifestyles. The corresponding impact \
+		of men is fixed at 0.5 in the role equation.
+	|
+
+Women’s impact as opinion influencers=0.65
+	~	Dmnl
+	~	This parameter represens the average effectiveness of women as opinion \
+		influencers in promoting climate-supportive voting. The corresponding \
+		impact of men is fixed at 0.5 in the role equation.
+	|
+
+Women’s impact as politicians=0.75
+	~	Dmnl
+	~	This parameter represents the average climate-supportive impact of women \
+		in political roles. The corresponding impact of men is fixed at 0.5 in the \
+		role equation.
+	|
+
+Scale parameter=20
+	~	Dmnl
+	~	Dimensionless scaling parameter applied uniformly to all role variables to \
+		keep their magnitudes comparable and maintain model stability.
+	|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 50
+	~	Year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Year [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Year [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$-1--1--1,0,|12||-1--1--1|-1--1--1|-1--1--1|-1--1--1|-1--1--1|96,96,65,2
+10,1,"Promotion of climate-supportive opinions",1279,854,147,25,8,3,0,24,-1,0,0,0,0-0-0,0-0-0,|16|B|0-0-0,0,0,0,0,0,0
+10,2,"Promotion of low-carbon lifestyles",1355,201,118,28,8,3,0,24,-1,0,0,0,0-0-0,0-0-0,|16|B|0-0-0,0,0,0,0,0,0
+10,3,"Low-carbon consumption",1101,374,87,27,8,3,0,24,-1,0,0,0,0-0-0,0-0-0,|16|B|0-0-0,0,0,0,0,0,0
+10,4,"Pro-climate voting",701,727,73,25,8,3,0,24,-1,0,0,0,0-0-0,0-0-0,|16|B|0-0-0,0,0,0,0,0,0
+10,5,"Climate-supportive politicians in power",799,370,166,24,8,3,0,24,-1,0,0,0,0-0-0,0-0-0,|16|B|0-0-0,0,0,0,0,0,0
+10,6,"Low-carbon production",1113,671,88,24,8,3,0,24,-1,0,0,0,0-0-0,0-0-0,|16|B|0-0-0,0,0,0,0,0,0
+1,7,5,3,1,0,43,13,0,193,0,-1--1--1,,1|(952,331)|
+1,8,1,4,1,0,43,13,0,65,0,-1--1--1,,1|(896,825)|
+1,9,4,5,1,0,43,13,0,193,0,-1--1--1,,1|(679,573)|
+1,10,5,6,1,0,43,13,0,65,0,-1--1--1,,1|(931,594)|
+1,11,3,6,1,0,43,13,0,193,0,-1--1--1,,1|(1078,527)|
+1,12,2,3,1,0,43,13,0,65,0,-1--1--1,,1|(1141,253)|
+10,13,Cumulative emissions,1462,496,87,24,3,3,0,24,-1,0,0,0,0-0-0,0-0-0,|16|B|0-0-0,0,0,0,0,0,0
+12,14,48,1179,494,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,15,17,14,100,0,0,22,0,192,0,-1--1--1,,1|(1226,494)|
+1,16,17,13,4,0,0,22,0,192,0,-1--1--1,,1|(1325,494)|
+11,17,0,1269,494,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,18,Emissions,1269,528,46,26,40,3,0,24,-1,0,0,0,0-0-0,0-0-0,|16|B|0-0-0,0,0,0,0,0,0
+1,19,3,18,1,0,45,13,1,64,0,0-0-255,|||0-0-0,1|(1223,416)|
+1,20,6,18,1,0,45,13,1,64,0,0-0-255,|||0-0-0,1|(1228,590)|
+10,21,Women’s share as lifestyle influencers,1240,108,67,25,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+10,22,Women’s impact as lifestyle influencers,1449,108,70,27,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,23,21,2,1,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(1267,154)|
+1,24,22,2,1,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(1420,186)|
+10,25,Women’s share as opinion influencers,1206,953,65,26,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+10,26,Women’s impact as opinion influencers,1396,955,65,26,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,27,25,1,1,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(1222,896)|
+1,28,26,1,1,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(1384,895)|
+10,29,Women’s share as firm managers,1047,767,61,26,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+10,30,Women’s impact as firm managers,1199,765,65,26,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,31,29,6,1,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(1058,716)|
+1,32,30,6,1,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(1176,714)|
+10,33,Women’s share as voters,540,803,65,26,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+10,34,Women’s impact as voters,677,820,65,26,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,35,33,4,1,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(597,752)|
+1,36,34,4,1,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(700,780)|
+10,37,Women’s share as consumers,1228,300,61,26,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+10,38,Women’s impact as consumers,1337,336,65,26,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,39,37,3,1,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(1156,316)|
+1,40,38,3,1,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(1256,368)|
+10,41,Women’s share as politicians,723,256,61,26,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+10,42,Women’s impact as politicians,857,259,61,27,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,43,41,5,1,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(723,350)|
+1,44,42,5,1,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(842,314)|
+10,45,Scale parameter,157,242,61,26,8,3,0,24,-1,0,0,0,0-0-0,0-0-0,|16|B|0-0-0,0,0,0,0,0,0
+10,46,Scale parameter,1120,165,64,23,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,47,46,2,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,48,Scale parameter,895,429,64,16,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,49,48,5,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,50,Scale parameter,790,669,69,18,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,51,50,4,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,52,Scale parameter,1354,791,78,17,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,53,52,1,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,54,Scale parameter,1171,439,65,19,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,55,54,3,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,56,Scale parameter,1155,595,68,19,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,57,56,6,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,58,E ref,1383,568,18,18,8,3,0,10,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,59,58,18,0,0,0,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,60,Remaining carbon budget,1684,494,91,30,8,3,0,24,-1,0,0,0,0-0-0,0-0-0,|16|B|0-0-0,0,0,0,0,0,0
+10,61,Carbon budget,1770,390,53,27,8,3,0,24,-1,0,0,0,0-0-0,0-0-0,|16|B|0-0-0,0,0,0,0,0,0
+1,62,13,60,1,0,45,13,1,64,0,128-0-128,|||0-0-0,1|(1565,559)|
+1,63,61,60,1,0,43,13,1,64,0,128-128-128,|||0-0-0,1|(1777,414)|
+1,64,60,1,1,0,45,13,1,65,0,128-0-128,|||0-0-0,1|(1590,693)|
+1,65,60,2,1,0,45,13,1,65,0,128-0-128,|||0-0-0,1|(1642,355)|
+10,66,Initial remaining carbon budget,1575,849,103,29,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+10,67,Initial cumulative emissions,1574,927,90,18,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,68,67,66,0,0,45,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,69,T1,1177,806,14,18,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,70,69,1,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,71,67,13,0,1,0,0,0,64,1,-1--1--1,,1|(0,0)|
+1,72,66,1,0,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+10,73,ϵ RB,1121,892,17,21,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,74,73,1,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,75,Carbon budget,1575,780,67,12,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,76,75,66,0,0,43,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,77,Initial remaining carbon budget,1642,201,119,28,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|16||0-0-0,0,0,0,0,0,0
+10,78,T2,1420,272,27,14,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,79,77,2,0,0,43,0,1,64,0,0-0-0,|||0-0-0,1|(0,0)|
+1,80,78,2,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,81,ϵ RB,1330,282,31,19,8,2,0,11,-1,0,0,0,128-128-128,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,82,81,2,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,83,T3,628,668,26,11,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,84,83,4,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,85,T4,672,414,18,13,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,86,85,5,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,87,T5,1057,306,27,15,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,88,87,3,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,89,T6,1019,430,14,19,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,90,89,3,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,91,T7,978,714,19,15,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+10,92,T8,1021,607,22,12,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,93,91,6,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,94,92,6,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+10,95,Ec,1289,409,21,11,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+10,96,Ef,1354,414,19,13,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+10,97,ε R,1317,599,22,13,8,3,0,8,-1,0,0,0,0-0-0,0-0-0,|16||0-0-0,0,0,0,0,0,0
+1,98,97,18,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,99,95,17,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+1,100,96,17,0,0,0,0,1,192,0,0-0-0,|||0-0-0,1|(0,0)|
+///---\\\
+:L<%^E!@
+1:Case 4 - USA (new).vdfx
+1:Case 4 - USA (old).vdfx
+4:Time
+5:Scale parameter
+9:Case 4 - USA (new)
+19:65,0
+24:0
+25:50
+26:50
+23:0
+15:0,0,0,0,0,0
+27:0,
+34:0,
+42:0
+72:0
+73:0
+95:0
+96:0
+97:0
+77:0
+78:0
+102:1
+93:0
+94:0
+92:0
+91:0
+90:0
+87:0
+75:
+43:
+103:8,8,8,3,8
+105:0,0,0,0,0,0,0,0,0,0
+104:Vensim Sans|12||0-0-0|0-0-0|-1--1--1|0-0-255|192-192-192|-1--1--1
